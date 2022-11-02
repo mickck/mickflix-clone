@@ -11,7 +11,6 @@ const Nav = styled(motion.nav)`
   color: white;
   width: 100%;
   top: 0;
-
   height: 80px;
   font-size: 14px;
   padding: 20px 60px;
@@ -28,7 +27,7 @@ const Logo = styled(motion.svg)`
   width: 95px;
   fill: ${(props) => props.theme.red};
   path {
-    stroke-width: 6px;
+    stroke-width: 3px;
     stroke: white;
   }
 `;
