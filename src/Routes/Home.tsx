@@ -1,3 +1,5 @@
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import styled from "styled-components";
 import { getMovies, IGetMoviesResult } from "../api";
@@ -27,30 +29,100 @@ const Banner = styled.div<{ bgPhoto: string }>`
 `;
 
 const Title = styled.h2`
-  font-size: 68px;
+  font-size: 65px;
   margin-bottom: 20px;
 `;
 const Overview = styled.p`
   // a stroy of the first movie
-  font-size: 30px;
+  font-size: 28px;
   width: 50%;
   text-shadow: 2px 2px 4px rgb(0 0 0 / 45%);
 `;
+
+const Slider = styled.div`
+  position: relative;
+  top: -100px;
+`;
+
+const Row = styled(motion.div)`
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
+  position: absolute;
+  width: 100%;
+`;
+
+const Box = styled(motion.div)<{ bgPhoto: string }>`
+  //220x122
+  background-color: white;
+  background-image: url(${(props) => props.bgPhoto});
+  background-position: center center;
+  background-size: cover;
+  height: 200px;
+  color: tomato;
+  font-size: 65px;
+`;
+
+//variants to check increasing index
+const rowVariants = {
+  hidden: {
+    x: window.outerWidth - 10,
+  },
+  visible: {
+    x: 0,
+  },
+  exit: {
+    x: -window.outerWidth + 10,
+  },
+};
+
+const offset = 6;
+
 function Home() {
   //const { data, isLoading, error } = useQuery(queryKey, queryFn?, queryOption);
   const { data, isLoading } = useQuery<IGetMoviesResult>(["movies, nowPlaying"], getMovies);
 
-  // console.log(data, isLoading);
+  const [index, setIndex] = useState(0);
+  const [leaving, setLeaving] = useState(false);
+  //function increse the index
+  //check before icreasing an index
+  const increaseIndex = () => {
+    if (data) {
+      //check  Row is leaving
+      if (leaving) return;
+      toggleLeaving();
+      //it's possible data is not exit
+      const totalMovies = data.results.length - 1;
+      //to make int of maxIndex'value
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
+      setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+    }
+  };
+  // if onExitComplete works, set leaving false.
+  const toggleLeaving = () => setLeaving((prev) => !prev);
   return (
     <Wrapper>
       {isLoading ? (
         <Loader>is Loading</Loader>
       ) : (
         <>
-          <Banner bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}>
+          <Banner bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")} onClick={increaseIndex}>
             <Title>{data?.results[0].title}</Title>
             <Overview>{data?.results[0].overview}</Overview>
           </Banner>
+          <Slider>
+            <AnimatePresence onExitComplete={toggleLeaving} initial={false}>
+              <Row key={index} variants={rowVariants} initial={rowVariants.hidden} animate={rowVariants.visible} exit={rowVariants.exit} transition={{ type: "tween", duration: 1.5 }}>
+                {/* movie[0] alreay used  */}
+                {data?.results
+                  .slice(1)
+                  .slice(offset * index, offset * index + offset)
+                  .map((movie) => (
+                    <Box key={movie.id} bgPhoto={makeImagePath(movie.backdrop_path, "w400")}></Box>
+                  ))}
+              </Row>
+            </AnimatePresence>
+          </Slider>
         </>
       )}
     </Wrapper>
