@@ -9,6 +9,7 @@ const Result = styled.div`
   top: 200px;
   position: relative;
   margin-bottom: 20px;
+  padding-left: 25px;
 `;
 
 const GridWrapper = styled.div`
