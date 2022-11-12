@@ -32,6 +32,16 @@ const Box = styled(motion.div)<{ bgphoto: string }>`
   background-position: center center;
 `;
 
+const BoxTitle = styled.div`
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 15px;
+  font-size: calc(12px+0.5vw);
+  font-weight: 600;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  display: flex;
+  position: relative;
+  bottom: -150px;
+`;
 const Category = styled.div`
   position: relative;
   top: 250px;
@@ -128,8 +138,7 @@ function Search() {
                   style={{ backgroundImage: `linear-gradient(transparent, black), url(${makeImagePath(prev.backdrop_path, "w300")})` }}
                   bgphoto={makeImagePath(prev.backdrop_path, "w400")}
                   layoutId={prev.id + "movie"}>
-                  <p>{prev.title}</p>
-                  {prev.id}
+                  <BoxTitle>{prev.title}</BoxTitle>
                 </Box>
               ))}
           </GridWrapper>
@@ -160,7 +169,7 @@ function Search() {
                   style={{ backgroundImage: `linear-gradient(transparent, black), url(${makeImagePath(prev.backdrop_path, "w300")})` }}
                   bgphoto={makeImagePath(prev.backdrop_path, "w400")}
                   layoutId={prev.id + "tv"}>
-                  <p>{prev.title}</p>
+                  <BoxTitle style={{ justifyContent: "center" }}>{prev.name}</BoxTitle>
                 </Box>
               ))}
           </GridWrapper>
@@ -171,7 +180,7 @@ function Search() {
                 {clickedTv && (
                   <>
                     <InfoCover style={{ backgroundImage: `linear-gradient(transparent, black), url(${makeImagePath(clickedTv.backdrop_path, "w500")})` }} />
-                    <InfoTitle>{clickedTv.title}</InfoTitle>
+                    <InfoTitle>{clickedTv.name}</InfoTitle>
                     <InfoOverview>{clickedTv.overview}</InfoOverview>
                   </>
                 )}
