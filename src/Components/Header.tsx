@@ -131,7 +131,7 @@ function Header() {
   /* get data from search form and send a data.keyword to search component  */
   const onValid = (data: IForm) => {
     // console.log(data);
-    navigator(`/search?keyword=${data.keyword}`);
+    navigator(`/search?keyword=${data.keyword}/`);
   };
   return (
     <Nav variants={navVariants} initial='top' animate={navAnimation}>

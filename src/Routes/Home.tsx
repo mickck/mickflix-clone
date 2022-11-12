@@ -1,5 +1,5 @@
 import { motion, AnimatePresence, useScroll } from "framer-motion";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useQuery } from "react-query";
 import styled from "styled-components";
 import { getMovies, IGetMoviesResult } from "../api";
@@ -8,6 +8,7 @@ import { useMatch, useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   background-color: ${(props) => props.theme.black.netflixDark};
+  margin-bottom: 100px;
 `;
 // while is loading the data.
 const Loader = styled.div`
@@ -23,8 +24,7 @@ const Banner = styled.div<{ bgphoto: string }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 60px;
-
+  margin-bottom: 60px;
   background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2)), url(${(props) => props.bgphoto});
   //top is transparent to little bit a dark
   background-size: cover;
@@ -41,7 +41,7 @@ const Overview = styled.p`
   text-shadow: 2px 2px 4px rgb(0 0 0 / 45%);
 `;
 
-const Slider = styled.div`
+const Slider = styled(motion.div)`
   position: relative;
   top: -100px;
 `;
@@ -52,6 +52,8 @@ const Row = styled(motion.div)`
   gap: 5px;
   position: absolute;
   width: 100%;
+
+  margin-right: 10px;
 `;
 
 const Box = styled(motion.div)<{ bgphoto: string }>`
@@ -73,7 +75,7 @@ const Box = styled(motion.div)<{ bgphoto: string }>`
 `;
 const Info = styled(motion.div)`
   padding: 10px;
-  background-color: ${(props) => props.theme.black.lighter};
+  background-color: rgba(0, 0, 0, 0.6);
   opacity: 0;
   position: absolute;
   width: 100%;
@@ -81,7 +83,7 @@ const Info = styled(motion.div)`
 
   h4 {
     text-align: center;
-    font-size: 18px;
+    font-size: 15px;
   }
 `;
 
@@ -103,7 +105,7 @@ const MoreInfoBox = styled(motion.div)`
   left: 0;
   right: 0;
   margin: 0 auto;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.1);
 `;
 
 const InfoCover = styled.div`
@@ -127,16 +129,81 @@ const BigOverview = styled.p`
   color: ${(props) => props.theme.white.lighter};
   font-size: 18px;
 `;
-//variants to check increasing index
+
+const InfoButton = styled.button`
+  margin-top: 20px;
+  width: 150px;
+  height: 50px;
+  border: 3px solid white;
+  border-radius: 5px;
+  background-color: transparent;
+  color: ${(props) => props.theme.white.lighter};
+  font-size: 15px;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+  }
+`;
+
+const LArrow = styled(motion.span)`
+  z-index: 99;
+  position: absolute;
+  left: 20px;
+  top: 50px;
+  content: "";
+  width: 60px;
+  height: 60px;
+  border-top: 7px solid rgba(0, 0, 0, 0.3);
+  border-right: 7px solid rgba(0, 0, 0, 0.3);
+  transform: rotate(225deg);
+
+  &:hover {
+    cursor: pointer;
+    border-top: 7px solid rgba(255, 255, 255, 0.8);
+    border-right: 7px solid rgba(255, 255, 255, 0.8);
+  }
+`;
+const RArrow = styled(motion.span)`
+  z-index: 99;
+  position: absolute;
+  right: 20px;
+  top: 50px;
+  content: "";
+  width: 60px;
+  height: 60px;
+  border-top: 7px solid rgba(0, 0, 0, 0.3);
+  border-right: 7px solid rgba(0, 0, 0, 0.3);
+  transform: rotate(45deg);
+
+  &:hover {
+    cursor: pointer;
+    border-top: 7px solid rgba(255, 255, 255, 0.8);
+    border-right: 7px solid rgba(255, 255, 255, 0.8);
+  }
+`;
+
+const Category = styled.h3`
+  position: relative;
+  display: inline;
+  font-size: calc(12px + 1.5vw);
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  color: white;
+  top: -105px;
+  margin-left: 10px;
+  padding: 2px;
+`;
+
 const rowVariants = {
-  hidden: {
-    x: window.outerWidth - 10,
-  },
+  hidden: (back: boolean) => ({
+    x: back ? -window.innerWidth + 10 : window.innerWidth - 10,
+  }),
   visible: {
     x: 0,
   },
-  exit: {
-    x: -window.outerWidth + 10,
+  exit: (back: boolean) => {
+    return {
+      x: back ? window.innerWidth - 10 : -window.innerWidth + 10,
+    };
   },
 };
 
@@ -146,11 +213,11 @@ const BoxVariants = {
   },
   hover: {
     scale: 1.4,
-    y: -40,
+    y: -50,
     transition: {
       delay: 0.5,
       type: "tween",
-      duration: 0.2,
+      duration: 0.3,
     },
   },
 };
@@ -171,6 +238,8 @@ const offset = 6;
 function Home() {
   //const { data, isLoading, error } = useQuery(queryKey, queryFn?, queryOption);
   const { data, isLoading } = useQuery<IGetMoviesResult>(["movies, nowPlaying"], getMovies);
+  // console.log(data);
+  const [back, setBack] = useState(false);
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const navigator = useNavigate();
@@ -184,12 +253,23 @@ function Home() {
     if (data) {
       //check  Row is leaving
       if (leaving) return;
+      setBack(false);
       toggleLeaving();
       //it's possible data is not exit
-      const totalMovies = data.results.length - 1;
+      const totalMovies = data.results.length;
       //to make int of maxIndex'value
       const maxIndex = Math.floor(totalMovies / offset) - 1;
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+    }
+  };
+  const decreaseIndex = () => {
+    if (data) {
+      if (leaving) return;
+      setBack(true);
+      toggleLeaving();
+      const totalMovies = data.results.length;
+      const maxIndex = Math.floor(totalMovies / offset) - 1;
+      setIndex((prev) => (prev === 0 ? maxIndex : prev - 1));
     }
   };
   // if onExitComplete works, set leaving false.
@@ -202,7 +282,6 @@ function Home() {
 
   /*check exiting moreInfoMatch  */
   const clickedMovie = moreInfoMatch?.params.movieId && data?.results.find((movie) => movie.id + "" === moreInfoMatch.params.movieId);
-  // console.log(clickedMovie);
   const onOverlayClicked = () => navigator("/");
   return (
     <Wrapper>
@@ -210,14 +289,22 @@ function Home() {
         <Loader>is Loading</Loader>
       ) : (
         <>
-          <Banner bgphoto={makeImagePath(data?.results[0].backdrop_path || "")} onClick={increaseIndex}>
+          <Banner bgphoto={makeImagePath(data?.results[0].backdrop_path || "")}>
             <Title>{data?.results[0].title}</Title>
             <Overview>{data?.results[0].overview}</Overview>
-          </Banner>
+            <InfoButton
+              onClick={() => {
+                navigator(`/movies/${data?.results[0].id}`);
+              }}>
+              More Info
+            </InfoButton>
+          </Banner>{" "}
+          <Category>Movie</Category>
           <Slider>
-            <AnimatePresence onExitComplete={toggleLeaving} initial={false}>
-              <Row key={index} variants={rowVariants} initial={rowVariants.hidden} animate={rowVariants.visible} exit={rowVariants.exit} transition={{ type: "tween", duration: 1.5 }}>
+            <AnimatePresence onExitComplete={toggleLeaving} initial={false} custom={back}>
+              <Row key={index} variants={rowVariants} initial='hidden' animate='visible' exit='exit' transition={{ type: "tween", duration: 1 }} custom={back}>
                 {/* movie[0] alreay used  */}
+
                 {data?.results
                   .slice(1)
                   .slice(offset * index, offset * index + offset)
@@ -238,6 +325,8 @@ function Home() {
                   ))}
               </Row>
             </AnimatePresence>
+            <LArrow onClick={decreaseIndex} />
+            <RArrow onClick={increaseIndex} />
           </Slider>
           <AnimatePresence>
             {moreInfoMatch ? (
