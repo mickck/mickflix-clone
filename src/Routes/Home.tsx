@@ -33,12 +33,14 @@ const Banner = styled.div<{ bgphoto: string }>`
 const Title = styled.h2`
   font-size: 65px;
   margin-bottom: 20px;
+  padding-left: 25px;
 `;
 const Overview = styled.p`
   // a stroy of the first movie
   font-size: 28px;
   width: 50%;
   text-shadow: 2px 2px 4px rgb(0 0 0 / 45%);
+  padding-left: 25px;
 `;
 
 const Slider = styled(motion.div)`
@@ -131,7 +133,8 @@ const BigOverview = styled.p`
 `;
 
 const InfoButton = styled.button`
-  margin-top: 20px;
+  margin-left: 25px;
+  margin-top: 25px;
   width: 150px;
   height: 50px;
   border: 3px solid white;
