@@ -9,14 +9,14 @@ function App() {
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path='/netflix-clone/' element={<Home />}>
+        <Route path='/mickflix-clone/' element={<Home />}>
           <Route path='movies/:id' element={<Home />} />
         </Route>
-        <Route path='/netflix-clone/tv' element={<Tv />}>
+        <Route path='/mickflix-clone/tv' element={<Tv />}>
           <Route path=':id' element={<Tv />} />
         </Route>
 
-        <Route path='/netflix-clone/search' element={<Search />}>
+        <Route path='/mickflix-clone/search' element={<Search />}>
           <Route path=':id' element={<Search />} />
         </Route>
       </Routes>
