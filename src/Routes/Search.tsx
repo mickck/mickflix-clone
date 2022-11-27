@@ -134,7 +134,7 @@ function Search() {
                 <Box
                   key={prev.id}
                   onClick={() => {
-                    navigator(`/search?keyword=${keyword}/${prev.id}`);
+                    navigator(`/netflix-clone/search?keyword=${keyword}/${prev.id}`);
                   }}
                   style={{ backgroundImage: `linear-gradient(transparent, black), url(${makeImagePath(prev.backdrop_path, "w300")})` }}
                   bgphoto={makeImagePath(prev.backdrop_path, "w400")}
@@ -165,7 +165,7 @@ function Search() {
                 <Box
                   key={prev.id}
                   onClick={() => {
-                    navigator(`/search?keyword=${keyword}/${prev.id}`);
+                    navigator(`/netflix-clone/search?keyword=${keyword}/${prev.id}`);
                   }}
                   style={{ backgroundImage: `linear-gradient(transparent, black), url(${makeImagePath(prev.backdrop_path, "w300")})` }}
                   bgphoto={makeImagePath(prev.backdrop_path, "w400")}

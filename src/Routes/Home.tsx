@@ -246,7 +246,7 @@ function Home() {
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const navigator = useNavigate();
-  const moreInfoMatch = useMatch("/movies/:movieId");
+  const moreInfoMatch = useMatch("/netflix-clone/movies/:movieId");
   // console.log(moreInfoMatch?.params.movieId);
   const { scrollY } = useScroll();
 
@@ -280,12 +280,12 @@ function Home() {
 
   /* get movie.id and send under the url using useNavigate() */
   const onBoxClicked = (movieId: number) => {
-    navigator(`/movies/${movieId}`);
+    navigator(`/netflix-clone/movies/${movieId}`);
   };
 
   /*check exiting moreInfoMatch  */
   const clickedMovie = moreInfoMatch?.params.movieId && data?.results.find((movie) => movie.id + "" === moreInfoMatch.params.movieId);
-  const onOverlayClicked = () => navigator("/");
+  const onOverlayClicked = () => navigator(-1);
   return (
     <Wrapper>
       {isLoading ? (
@@ -297,7 +297,7 @@ function Home() {
             <Overview>{data?.results[0].overview}</Overview>
             <InfoButton
               onClick={() => {
-                navigator(`/movies/${data?.results[0].id}`);
+                navigator(`/netflix-clone/movies/${data?.results[0].id}`);
               }}>
               More Info
             </InfoButton>

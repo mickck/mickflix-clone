@@ -99,8 +99,8 @@ function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const inputAnimation = useAnimation();
   const navAnimation = useAnimation();
-  const homeMatch = useMatch("/");
-  const tvMatch = useMatch("tv");
+  const homeMatch = useMatch("/netflix-clone/");
+  const tvMatch = useMatch("/netflix-clone/tv");
   const { scrollY } = useScroll();
   const toggleSearch = () => {
     //  { scaleX: searchOpen ? 1 : 0 }
@@ -131,7 +131,7 @@ function Header() {
   /* get data from search form and send a data.keyword to search component  */
   const onValid = (data: IForm) => {
     // console.log(data);
-    navigator(`/search?keyword=${data.keyword}/`);
+    navigator(`/netflix-clone/search?keyword=${data.keyword}/`);
   };
   return (
     <Nav variants={navVariants} initial='top' animate={navAnimation}>
@@ -146,10 +146,10 @@ function Header() {
         </Logo>
         <Items>
           <Item>
-            <Link to='/'>Home {homeMatch && <Circle layoutId='circle' />}</Link>
+            <Link to='/netflix-clone/'>Home {homeMatch && <Circle layoutId='circle' />}</Link>
           </Item>
           <Item>
-            <Link to='tv'>TV Shows {tvMatch && <Circle layoutId='circle' />}</Link>
+            <Link to='/netflix-clone/tv'>TV Shows {tvMatch && <Circle layoutId='circle' />}</Link>
           </Item>
           <Item>
             Movies

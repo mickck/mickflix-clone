@@ -231,7 +231,7 @@ function Tv() {
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const navigator = useNavigate();
-  const moreInfoMatch = useMatch("/tv/:tvId");
+  const moreInfoMatch = useMatch("/netflix-clone/tv/:tvId");
   // console.log(moreInfoMatch?.params.movieId);
   const { scrollY } = useScroll();
 
@@ -265,7 +265,7 @@ function Tv() {
 
   /* get movie.id and send under the url using useNavigate() */
   const onBoxClicked = (tvId: number) => {
-    navigator(`/tv/${tvId}`);
+    navigator(`/netflix-clone/tv/${tvId}`);
   };
 
   /*check exiting moreInfoMatch  */
@@ -282,7 +282,7 @@ function Tv() {
             <Overview>{data?.results[0].overview}</Overview>
             <InfoButton
               onClick={() => {
-                navigator(`/tv/${data?.results[0].id}`);
+                navigator(`/netflix-clone/tv/${data?.results[0].id}`);
               }}>
               More Info
             </InfoButton>
