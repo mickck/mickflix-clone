@@ -1,6 +1,6 @@
 {
-  "homepage": "https://mickck.github.io/netflix-clone",
-  "name": "netflix-clone",
+  "homepage": "https://mickck.github.io/mickflix-clone",
+  "name": "mickflix-clone",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
