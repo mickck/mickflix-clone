@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/mickflix-clone/static/js/main.c9e83609.js",
+    "main.js": "/mickflix-clone/static/js/main.449b3ef8.js",
     "index.html": "/mickflix-clone/index.html",
-    "main.c9e83609.js.map": "/mickflix-clone/static/js/main.c9e83609.js.map"
+    "main.449b3ef8.js.map": "/mickflix-clone/static/js/main.449b3ef8.js.map"
   },
   "entrypoints": [
-    "static/js/main.c9e83609.js"
+    "static/js/main.449b3ef8.js"
   ]
 }
