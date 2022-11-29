@@ -1,2 +1,3 @@
-This is a netflix-clone site
-=============
+# Netflix Clone Project
+
+## 
