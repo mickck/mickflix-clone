@@ -1,9 +1,11 @@
 # Netflix Clone Project
 Netlix clone project with movie searching, slider and modal featurs built using TypeScript, Styled Components, React.js and Framer Motion 
 
+Webpage: https://mickck.github.io/netflix-clone/
+
 ![netflix](https://user-images.githubusercontent.com/49193381/204677347-e850283e-b434-4aec-955c-9c0b7f8aa113.png)
 
-Webpage: https://mickck.github.io/netflix-clone/
+
 ## Packages Used
 
 - React Router
